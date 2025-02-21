@@ -12,24 +12,35 @@ void clear_screen();
 User me = User("Max", 10000);
 
 int main() {
+	//int wins = 0;
+	//float amount = 0;
+	//for (int i = 0; i <= 100; i++) {
+	//	bool has_won = RouletteGame().check_win(SINGLE_NUMBER, 2);
+	//	amount -= 0.2f;
+	//	if (has_won) {
+	//		wins++;
+	//		amount += 0.2f * 36;
+	//	}
+	//}
+	//std::cout << "Won x" << wins << " times, balance £" << amount << std::endl;
 	while (1) {
 		print_bet_choices();
 	}
 	return 0;
 }
 
+void simulate_choice() {
+	clear_screen();
+	std::cout << "Yipeee!\n";
+}
+
 void print_bet_choices() {
 	std::cout <<
 		"Balance: " << me.get_current_amount() <<
 		"\nChoose an option:\n" <<
-		"1. Odd/Even\n2. Number\n3. Black/Red\n4. Exit\n\n>> ";
+		"1. Odd/Even\n2. Number\n3. Black/Red\n4. Simulation\n5. Exit\n\n>> ";
 	int choice;
 	std::cin >> choice;
-
-	if (choice == 4) {
-		std::cout << "\nThanks for playing!\n";
-		exit(0);
-	}
 	
 	clear_screen();
 	print_option(choice);
@@ -53,6 +64,14 @@ void print_option(int choice) {
 	case SINGLE_NUMBER:
 		std::cout << "Choose a number:\n>> ";
 		break;
+		
+	case 4:
+		simulate_choice();
+		return;
+
+	case 5:
+		std::cout << "Thanks for playing!\n";
+		exit(0);
 
 	default:
 		return;
