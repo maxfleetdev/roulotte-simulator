@@ -1,6 +1,6 @@
 # 🎰 C++ Roulette Game
 
-A simple command-line **roulette game** built in C++ that allows players to place bets on **Odd/Even, Single Numbers, and Colours**. The game simulates a European roulette wheel with correct odds and payouts.
+A simple command-line **roulette game** built in C++ that allows players to place bets on **Odd/Even, Single Numbers, and Colours (Black/Red)**. The game simulates a European roulette wheel with correct odds and payouts.
 
 ## 🎯 Features
 - ✅ **Bet Types**:
@@ -18,14 +18,16 @@ A simple command-line **roulette game** built in C++ that allows players to plac
 
 ### **1️⃣ Clone the Repository**
 ```bash
-git clone https://github.com/yourusername/cpp-roulette-game.git
-cd cpp-roulette-game
+git clone https://github.com/maxfleetdev/roulotte-simulator.git
+cd roulotte-simulator
 ```
+
 2️⃣ Compile the Code
 Use g++ or any modern C++ compiler:
 ```bash
 g++ -o roulette main.cpp user.cpp roulette.cpp number-generator.cpp -std=c++17
 ```
+
 3️⃣ Run the Game
 ```bash
 ./roulette
