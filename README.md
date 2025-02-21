@@ -20,10 +20,13 @@ A simple command-line **roulette game** built in C++ that allows players to plac
 ```bash
 git clone https://github.com/yourusername/cpp-roulette-game.git
 cd cpp-roulette-game
+```
 2️⃣ Compile the Code
 Use g++ or any modern C++ compiler:
-bash
+```bash
 g++ -o roulette main.cpp user.cpp roulette.cpp number-generator.cpp -std=c++17
+```
 3️⃣ Run the Game
-bash
+```bash
 ./roulette
+```
