@@ -2,7 +2,7 @@
 
 A simple command-line **roulette game** built in C++ that allows players to place bets on **Odd/Even, Single Numbers, and Colours (Black/Red)**. The game simulates a European roulette wheel with correct odds and payouts.
 
-## 🎯 Features
+## Features
 - ✅ **Bet Types**:
 - ✅ **Odd/Even** (1:1 payout)
 - ✅ **Red/Black (Colour)** (1:1 payout)
@@ -15,7 +15,7 @@ A simple command-line **roulette game** built in C++ that allows players to plac
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### **1️⃣ Clone the Repository**
 ```bash
@@ -35,7 +35,7 @@ g++ -o roulette main.cpp user.cpp roulette.cpp number-generator.cpp -std=c++17
 ```
 
 ---
-## 🎮 How to Play
+## How to Play
 1. The game starts with $1000 balance.
 2. Choose an option type:
    - 1 → Odd/Even
