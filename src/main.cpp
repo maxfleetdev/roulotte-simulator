@@ -3,119 +3,157 @@
 #include "roulette.h"
 #include "user.h"
 
-void print_bet_choices();
-void print_option(int choice);
+void simulate_choice(BetType type, int option);
+BetType print_bet_choices(bool allow_simulation = true);
+int print_option(BetType type);
 void place_bet(BetType type, int option);
 void clear_screen();
 
-// placeholder
+// Placeholder user with starting balance
 User me = User("Max", 10000);
 
 int main() {
-	//int wins = 0;
-	//float amount = 0;
-	//for (int i = 0; i <= 100; i++) {
-	//	bool has_won = RouletteGame().check_win(SINGLE_NUMBER, 2);
-	//	amount -= 0.2f;
-	//	if (has_won) {
-	//		wins++;
-	//		amount += 0.2f * 36;
-	//	}
-	//}
-	//std::cout << "Won x" << wins << " times, balance £" << amount << std::endl;
-	while (1) {
-		print_bet_choices();
-	}
-	return 0;
+    while (true) {
+        BetType type = print_bet_choices();
+        int choice = print_option(type);
+        if (choice == -1) {
+            continue; // Skip invalid inputs
+        }
+        place_bet(type, choice);
+    }
+    return 0;
 }
 
-void simulate_choice() {
-	clear_screen();
-	std::cout << "Yipeee!\n";
+BetType print_bet_choices(bool allow_simulation) {
+    std::cout <<
+        "Balance: $" << me.get_current_amount() <<
+        "\nChoose an option:\n"
+        "1. Odd/Even\n"
+        "2. Number\n"
+        "3. Black/Red";
+
+    if (allow_simulation) {
+        std::cout << "\n4. Simulation\n5. Exit";
+    }
+
+    std::cout << "\n\n>> ";
+
+    int choice;
+    std::cin >> choice;
+
+    clear_screen();
+
+    // If simulation is allowed and user picks it, return SIMULATION
+    if (allow_simulation && choice == 4) return SIMULATION;
+    if (allow_simulation && choice == 5) return EXIT;
+
+    // Ensure the user selects a valid bet type (1-3)
+    if (choice < 1 || choice > 3) {
+        std::cout << "Invalid choice. Try again.\n";
+        return print_bet_choices(allow_simulation);
+    }
+
+    return static_cast<BetType>(choice);
 }
 
-void print_bet_choices() {
-	std::cout <<
-		"Balance: " << me.get_current_amount() <<
-		"\nChoose an option:\n" <<
-		"1. Odd/Even\n2. Number\n3. Black/Red\n4. Simulation\n5. Exit\n\n>> ";
-	int choice;
-	std::cin >> choice;
-	
-	clear_screen();
-	print_option(choice);
+int print_option(BetType type) {
+    int option;
+
+    switch (type) {
+    case COLOUR:
+        std::cout << "Choose a colour:\n0. Black\n1. Red\n\n>> ";
+        break;
+    case ODD_EVEN:
+        std::cout << "Choose an option:\n0. Odd\n1. Even\n\n>> ";
+        break;
+    case SINGLE_NUMBER:
+        std::cout << "Choose a number (0-36):\n>> ";
+        break;
+    case SIMULATION: {
+        // Ask for bet type (without Simulation/Exit as options)
+        BetType sim_type = print_bet_choices(false);
+        int sim_option = print_option(sim_type);
+        if (sim_option != -1) {
+            simulate_choice(sim_type, sim_option);
+        }
+        return -1; // Skip actual betting after simulation
+    }
+    case EXIT:
+        std::cout << "Thanks for playing!\n";
+        exit(0);
+    default:
+        return -1; // Invalid input
+    }
+
+    std::cin >> option;
+
+    // Validate single number bet
+    if (type == SINGLE_NUMBER && (option < 0 || option > 36)) {
+        std::cout << "Invalid number. Choose between 0-36.\n";
+        return print_option(type);
+    }
+
+    return option;
 }
 
-void print_option(int choice) {
-	BetType type = (BetType)choice;
-	int option;
+void simulate_choice(BetType type, int option) {
+    clear_screen();
 
-	switch (type) {
-	case COLOUR:
-		std::cout << "Choose a colour:\n";
-		std::cout << "0. Black\n1. Red\n\n>> ";
-		break;
+    int wins = 0;
+    int total = 0;
+    int per_bet = 10;
+    int num_simulations = 100; // Number of rounds
 
-	case ODD_EVEN:
-		std::cout << "Choose an option:\n";
-		std::cout << "0. Odd\n1. Even\n\n>> ";
-		break;
+    std::cout << "Simulating " << num_simulations << " rounds...\n\n";
 
-	case SINGLE_NUMBER:
-		std::cout << "Choose a number:\n>> ";
-		break;
-		
-	case 4:
-		simulate_choice();
-		return;
+    for (int i = 0; i < num_simulations; i++) {
+        bool has_won = RouletteGame().check_win(type, option);
+        total += has_won ? per_bet : -per_bet;
+        wins += has_won ? 1 : 0;
+    }
 
-	case 5:
-		std::cout << "Thanks for playing!\n";
-		exit(0);
-
-	default:
-		return;
-	}
-
-	std::cin >> option;
-
-	place_bet(type, option);
+    std::cout << "Simulation Results:\n";
+    std::cout << "Wins: " << wins << "/" << num_simulations << " (" << (wins * 100 / num_simulations) << "%)\n";
+    std::cout << "Total Winnings/Losses: $" << total << "\n\n";
 }
 
 void place_bet(BetType type, int option) {
+    clear_screen();
 
-	clear_screen();
+    std::cout << "Place a bet:\n>> ";
 
-	std::cout << "Place a bet:\n>> ";
-	
-	int bet;
-	std::cin >> bet;
-	clear_screen();
+    int bet;
+    std::cin >> bet;
 
-	if (me.get_current_amount() - bet < 0) {
-		std::cout << "Not enough balance!\n\n";
-		return;
-	}
+    // Ensure the user enters a positive bet amount
+    if (bet <= 0) {
+        std::cout << "Invalid bet amount! Please enter a positive value.\n";
+        return;
+    }
 
-	bool has_won = RouletteGame().check_win(type, option);
-	if (has_won) {
-		if (type == ODD_EVEN || type == COLOUR) {
-			me.change_amount(bet);
-			std::cout << "\nYou won " << bet * 2 << "!\n";
-		}
-		else {
-			me.change_amount(bet * 35);
-			std::cout << "\nYou won " << bet * 35 << "!\n";
-		}
-	}
+    clear_screen();
 
-	else {
-		me.change_amount(-bet);
-		std::cout << "\nYou lost!\n";
-	}
+    if (me.get_current_amount() - bet < 0) {
+        std::cout << "Not enough balance!\n\n";
+        return;
+    }
+
+    bool has_won = RouletteGame().check_win(type, option);
+    if (has_won) {
+        int winnings = (type == ODD_EVEN || type == COLOUR) ? bet * 2 : bet * 35;
+        me.change_amount(winnings);
+        std::cout << "\nYou won $" << winnings << "!\n";
+    }
+    else {
+        me.change_amount(-bet);
+        std::cout << "\nYou lost!\n";
+    }
+
+    // Show updated balance
+    std::cout << "New Balance: $" << me.get_current_amount() << "\n";
 }
 
 void clear_screen() {
-	std::cin.clear();
-	system("cls");
+    std::cin.clear();
+    system("cls"); // Change to "clear" for Unix/macOS
 }

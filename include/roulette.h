@@ -6,7 +6,9 @@
 enum BetType {
 	ODD_EVEN = 1,
 	SINGLE_NUMBER = 2,
-	COLOUR = 3
+	COLOUR = 3,
+	SIMULATION = 4,
+	EXIT = 5 
 };
 
 class RouletteGame {
