@@ -9,7 +9,6 @@ int print_option(BetType type);
 void place_bet(BetType type, int option);
 void clear_screen();
 
-// Placeholder user with starting balance
 User me = User("Max", 10000);
 
 int main() {
@@ -17,7 +16,7 @@ int main() {
         BetType type = print_bet_choices();
         int choice = print_option(type);
         if (choice == -1) {
-            continue; // Skip invalid inputs
+            continue;
         }
         place_bet(type, choice);
     }
@@ -43,11 +42,9 @@ BetType print_bet_choices(bool allow_simulation) {
 
     clear_screen();
 
-    // If simulation is allowed and user picks it, return SIMULATION
     if (allow_simulation && choice == 4) return SIMULATION;
     if (allow_simulation && choice == 5) return EXIT;
 
-    // Ensure the user selects a valid bet type (1-3)
     if (choice < 1 || choice > 3) {
         std::cout << "Invalid choice. Try again.\n";
         return print_bet_choices(allow_simulation);
@@ -70,24 +67,22 @@ int print_option(BetType type) {
         std::cout << "Choose a number (0-36):\n>> ";
         break;
     case SIMULATION: {
-        // Ask for bet type (without Simulation/Exit as options)
         BetType sim_type = print_bet_choices(false);
         int sim_option = print_option(sim_type);
         if (sim_option != -1) {
             simulate_choice(sim_type, sim_option);
         }
-        return -1; // Skip actual betting after simulation
+        return -1;
     }
     case EXIT:
         std::cout << "Thanks for playing!\n";
         exit(0);
     default:
-        return -1; // Invalid input
+        return -1;
     }
 
     std::cin >> option;
 
-    // Validate single number bet
     if (type == SINGLE_NUMBER && (option < 0 || option > 36)) {
         std::cout << "Invalid number. Choose between 0-36.\n";
         return print_option(type);
@@ -102,7 +97,7 @@ void simulate_choice(BetType type, int option) {
     int wins = 0;
     int total = 0;
     int per_bet = 10;
-    int num_simulations = 100; // Number of rounds
+    int num_simulations = 100;
 
     std::cout << "Simulating " << num_simulations << " rounds...\n\n";
 
@@ -125,7 +120,6 @@ void place_bet(BetType type, int option) {
     int bet;
     std::cin >> bet;
 
-    // Ensure the user enters a positive bet amount
     if (bet <= 0) {
         std::cout << "Invalid bet amount! Please enter a positive value.\n";
         return;
@@ -149,11 +143,10 @@ void place_bet(BetType type, int option) {
         std::cout << "\nYou lost!\n";
     }
 
-    // Show updated balance
     std::cout << "New Balance: $" << me.get_current_amount() << "\n";
 }
 
 void clear_screen() {
     std::cin.clear();
-    system("cls"); // Change to "clear" for Unix/macOS
+    system("cls");
 }
