@@ -35,16 +35,16 @@ g++ -o roulette main.cpp user.cpp roulette.cpp number-generator.cpp -std=c++17
 
 ---
 ## 🎮 How to Play
-- 1. The game starts with $1000 balance.
-- 2. Choose a bet type:
--   1 → Odd/Even
--   2 → Single Number
--   3 → Black/Red
-- 3. Enter your specific bet:
--   0 for Black, 1 for Red (for Colour bets)
--   0 for Odd, 1 for Even (for Odd/Even bets)
--   0-36 for Single Number bets
-- 4. Enter the amount you want to bet.
-- 5. The roulette spins and determines the winning number.
-- 6. Your balance updates based on the result.
-- 7. Play again or exit.
+1. The game starts with $1000 balance.
+2. Choose a bet type:
+  1 → Odd/Even
+  2 → Single Number
+  3 → Black/Red
+3. Enter your specific bet:
+  0 for Black, 1 for Red (for Colour bets)
+  0 for Odd, 1 for Even (for Odd/Even bets)
+  0-36 for Single Number bets
+4. Enter the amount you want to bet.
+5. The roulette spins and determines the winning number.
+6. Your balance updates based on the result.
+7. Play again or exit.
